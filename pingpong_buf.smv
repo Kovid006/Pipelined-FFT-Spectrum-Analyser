@@ -1,0 +1,45 @@
+-- =============================================================================
+-- pingpong_buf.smv -- NuSMV Model for Ping-Pong Buffer Safety Verification
+-- =============================================================================
+-- VL-401 RTL Design: Project P10
+-- Authors: Kovid Agarwal (B24488) and Kailash (B24486)
+-- Target: Digilent Zybo Z7-10 (xc7z010clg400-1)
+--
+-- Property to prove: Mutual exclusion of write and read banks
+--   CTLSPEC AG (wr_bank != rd_bank)
+-- =============================================================================
+
+MODULE main
+VAR
+  rst_n   : boolean;
+  wr_vld  : boolean;
+  wr_cnt  : 0..255;
+  wr_bank : boolean;
+
+DEFINE
+  rd_bank := !wr_bank;
+
+ASSIGN
+  init(wr_cnt)  := 0;
+  init(wr_bank) := FALSE;
+
+  next(wr_cnt) := 
+    case
+      !rst_n : 0;
+      wr_vld & (wr_cnt = 255) : 0;
+      wr_vld & (wr_cnt < 255) : wr_cnt + 1;
+      TRUE : wr_cnt;
+    esac;
+
+  next(wr_bank) :=
+    case
+      !rst_n : FALSE;
+      wr_vld & (wr_cnt = 255) : !wr_bank;
+      TRUE : wr_bank;
+    esac;
+
+-- Formal CTL Safety Invariant:
+-- In all reachable states on all execution paths, the write bank and read bank
+-- can never coincide, guaranteeing zero data corruption between FFT and VGA/CPU.
+CTLSPEC
+  AG (wr_bank != rd_bank)

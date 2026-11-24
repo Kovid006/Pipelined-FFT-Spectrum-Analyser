@@ -1,0 +1,29 @@
+================================================================================
+   P10 SYSTEM-LEVEL SIMULATION REPORT: UART & VGA PROTOCOL VERIFICATION
+================================================================================
+Simulator: AMD/Xilinx Vivado xsim v2025.2 (64-bit)
+Top Module: tb_system (tb/tb_system.v)
+System Clock: 125.0 MHz (8.0 ns period)
+UART Baud Rate: 115200 (8N1)
+VGA Video Mode: 640x480 @ 60Hz (25.0 MHz pixel clock enable)
+Target Device: Digilent Zybo Z7-10 (xc7z010clg400-1)
+
+--------------------------------------------------------------------------------
+SIMULATION EXECUTION TRACE
+--------------------------------------------------------------------------------
+[TB_SYS] Reset released @ 125 MHz. Configuring DDS bin=32...
+[TB_SYS] CTRL written. Waiting for irq_frame_done...
+[TB_SYS] irq_frame_done seen at cycle 616
+[TB_SYS] irq_peak_done seen OK
+[TB_SYS] CSR_PEAK_BIN = 32 (expected 32)
+[TB_SYS] CSR_PEAK_MAG = 11325
+[TB_SYS] Waiting for UART 'PEAK:032\r\n'...
+PEAK:032
+
+[TB_SYS] PASS: UART output is 'PEAK:032\r\n'
+[TB_SYS] VGA HSYNC toggled OK after 2695 sys-cycles
+====================================================
+tb_system: ALL TESTS PASSED
+====================================================
+Finished at simulation time: 890,372 ns
+================================================================================
